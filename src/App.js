@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import './styles/App.css';
+import React, { useState } from 'react';
+import PostsList from './components/PostsList';
+import PostForm from './components/PostForm';
 
-function App() {
+const App = () => {
+  const [posts, setPosts] = useState([
+    { id: 1, title: 'Javascript', body: 'Javascript - язык программирования' },
+    { id: 2, title: 'Java', body: 'Java - язык программирования' },
+    { id: 3, title: 'Python', body: 'Python - язык программирования' },
+  ])
+
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost]);
+  }
+
+  const removePost = (post) => {
+    setPosts(posts.filter(p => p.id !== post.id));
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <PostForm createPost={createPost} />
+      {posts.length 
+        ? 
+        <PostsList remove={removePost} posts={posts} title={'Список постов'} />
+        :
+        <h1 style={{ textAlign:'center' }}>
+          Посты не найдены!
+        </h1>
+      }
     </div>
   );
 }
