@@ -2,59 +2,42 @@ import './styles/App.css';
 import React, { useState } from 'react';
 import PostsList from './components/PostsList';
 import PostForm from './components/PostForm';
-import MySelect from './components/UI/select/MySelect';
-import MyInput from './components/UI/input/MyInput';
+import PostFilter from './components/PostFilter';
+import MyModal from './components/UI/modal/MyModal';
+import MyButton from './components/UI/button/MyButton';
+import { usePosts } from './hooks/usePosts';
 
 const App = () => {
-  const [posts, setPosts] = useState([
-    { id: 1, title: 'Javascript', body: 'Javascript - язык программирования' },
-    { id: 2, title: 'Java', body: 'Java - язык программирования' },
-    { id: 3, title: 'Python', body: 'Python - язык программирования' },
-  ])
-  const [selectedSort, setSelectedSort] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+
+  const [posts, setPosts] = useState([]);
+  const [filter, setFilter] = useState({sort: '', query: ''});
+  const [modal, setModal] = useState(false);
+  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
+    setModal(false);
   }
 
   const removePost = (post) => {
     setPosts(posts.filter(p => p.id !== post.id));
   }
 
-  const sortPosts = (sort) => {
-    setSelectedSort(sort);
-    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])));
-  }
-
   return (
     <div className='App'>
-      <PostForm createPost={createPost} />
+      <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>
+        Создать пост
+      </MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm createPost={createPost} />
+      </MyModal>
       <hr style={{ margin: '15px 0' }} />
-      <div>
-        <MyInput
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          placeholder='Поиск...'
-        />
-        <MySelect
-          value={selectedSort}
-          onChange={sortPosts}
-          defaultValue='Сортировка'
-          options={[
-            { value: 'title', name: 'по названию' },
-            { value: 'body', name: 'по описанию' },
-          ]}
-        />
-      </div>
-      {posts.length 
-        ? 
-        <PostsList remove={removePost} posts={posts} title={'Список постов'} />
-        :
-        <h1 style={{ textAlign:'center' }}>
-          Посты не найдены!
-        </h1>
-      }
+      <PostFilter
+        filter={filter}
+        setFilter={setFilter}
+      />
+      <PostsList remove={removePost} posts={sortedAndSearchedPosts} title={'Список постов'} />
     </div>
   );
 }
