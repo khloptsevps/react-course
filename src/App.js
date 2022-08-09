@@ -1,45 +1,26 @@
+/* eslint-disable react/jsx-filename-extension */
+
 import './styles/App.css';
-import React, { useState } from 'react';
-import PostsList from './components/PostsList';
-import PostForm from './components/PostForm';
-import PostFilter from './components/PostFilter';
-import MyModal from './components/UI/modal/MyModal';
-import MyButton from './components/UI/button/MyButton';
-import { usePosts } from './hooks/usePosts';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
+import About from './components/pages/About';
+import Posts from './components/pages/Posts';
+import Navbar from './components/navbar/Navbar';
 
-const App = () => {
-
-  const [posts, setPosts] = useState([]);
-  const [filter, setFilter] = useState({sort: '', query: ''});
-  const [modal, setModal] = useState(false);
-  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-
-
-  const createPost = (newPost) => {
-    setPosts([...posts, newPost]);
-    setModal(false);
-  }
-
-  const removePost = (post) => {
-    setPosts(posts.filter(p => p.id !== post.id));
-  }
-
-  return (
-    <div className='App'>
-      <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>
-        Создать пост
-      </MyButton>
-      <MyModal visible={modal} setVisible={setModal}>
-        <PostForm createPost={createPost} />
-      </MyModal>
-      <hr style={{ margin: '15px 0' }} />
-      <PostFilter
-        filter={filter}
-        setFilter={setFilter}
-      />
-      <PostsList remove={removePost} posts={sortedAndSearchedPosts} title={'Список постов'} />
-    </div>
-  );
-}
+const App = () => (
+  <Router>
+    <Navbar />
+    <Routes>
+      <Route path="/about" element={<About />} />
+      <Route path="/posts" element={<Posts />} />
+      <Route path="*" element={<Navigate to="/posts" replace />} />
+    </Routes>
+  </Router>
+);
 
 export default App;
