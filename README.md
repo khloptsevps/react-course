@@ -1,29 +1,23 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Описание
+ - Небольшой курс по React с просторов Youtube
 
-## Available Scripts
 
-In the project directory, you can run:
+## Системные требования / System requirements
 
-### `npm start`
+```sh
+node 14.x
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Установка / Setup
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```sh
+$ make install
+```
 
-### `npm run build`
+## Запуск (режим разработки) / start (developer mode)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```sh
+$ make dev
+```
